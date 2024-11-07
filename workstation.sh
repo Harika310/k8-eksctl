@@ -43,14 +43,14 @@ fi
 curl -O https://s3.us-west-2.amazonaws.com/amazon-eks/1.31.0/2024-09-12/bin/linux/amd64/kubectl
 chmod +x ./kubectl
 mv kubectl /usr/local/bin/kubectl
-kubectl version
+# kubectl version
 VALIDATE $? "kubectl installation"
 
 # eksctl
 curl -sLO "https://github.com/eksctl-io/eksctl/releases/latest/download/eksctl_$PLATFORM.tar.gz"
 tar -xzf eksctl_$PLATFORM.tar.gz -C /tmp && rm eksctl_$PLATFORM.tar.gz
 mv /tmp/eksctl /usr/local/bin
-eksctl version
+# eksctl version
 VALIDATE $? "eksctl installation"
 
 # kubens
@@ -58,6 +58,9 @@ git clone https://github.com/ahmetb/kubectx /opt/kubectx
 ln -s /opt/kubectx/kubens /usr/local/bin/kubens
 VALIDATE $? "kubens installation"
 
+# kubectl metric server
+kubectl apply -f https://github.com/kubernetes-sigs/metrics-server/releases/latest/download/components.yaml
+VALIDATE $? "metric-server installation"
 
 # Helm
 curl -fsSL -o get_helm.sh https://raw.githubusercontent.com/helm/helm/main/scripts/get-helm-3
